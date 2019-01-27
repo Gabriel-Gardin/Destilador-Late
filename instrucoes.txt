@@ -1,0 +1,15 @@
+Neste projeto foi utilizado o PyQt4 juntamente com o pyqtgraphs para construção da interface.
+
+Para fazer com que o GraphicsVIew mostrasse o gráfico fez se o seguinte no próprio designer do PyQt:
+
+'''
+    In Designer, create a QGraphicsView widget (“Graphics View” under the “Display Widgets” 	     category).
+    Right-click on the QGraphicsView and select “Promote To...”.
+    Under “Promoted class name”, enter the class name you wish to use (“PlotWidget”,   “GraphicsLayoutWidget”, etc).
+    Under “Header file”, enter “pyqtgraph”.
+    Click “Add”, then click “Promote”.
+
+Disponivel em: http://www.pyqtgraph.org/documentation/how_to_use.html
+
+'''
+
