@@ -1,0 +1,3 @@
+#Dont track these files
+.csv
+.pyc
