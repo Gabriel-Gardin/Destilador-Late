@@ -11,7 +11,7 @@ class destilador(QtGui.QMainWindow):
         self.graphics = graphics
         self.X_data = []
         self.Y_data = []
-        self.serial = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+        self.serial = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 
     def run(self, flag):
         complemento = 36.00
@@ -31,14 +31,17 @@ class destilador(QtGui.QMainWindow):
 
             while(self.serial.in_waiting>0):
                 line = self.serial.readline().strip()
-                if(line != '#'):
+                plot_data = line.split(";")
+                print(len(plot_data))
+                if(len(plot_data)):
                     print(line)
-                    plot_data = line.split(";")
                     self.X_data.append(float(plot_data[1]))
                     self.Y_data.append(float(plot_data[2]))
                     self.fileDialog = QtGui.QFileDialog(self)
                     #print(self.X_data, self.Y_data)
                     self.graphics.plot(self.X_data, self.Y_data)
+                elif(line == '#'):
+                    print("haha!")
 
             QtCore.QCoreApplication.processEvents()
             time.sleep(1)

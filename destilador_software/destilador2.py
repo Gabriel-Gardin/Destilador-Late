@@ -1,5 +1,4 @@
 import sys
-
 from PyQt4 import QtGui, uic
 from destilador_logic import destilador
 import pyqtgraph as pg

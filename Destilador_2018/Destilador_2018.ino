@@ -63,9 +63,10 @@ void loop()
   //Serial.println(analogRead(sensor));
   if(analogRead(sensor) > 200)  //Verifica se o volume de água está acima do nível do sensor.
   {
+    //Serial.print("#");
     delay(30);
     if(analogRead(sensor) > 200){
-      Serial.print("#");
+      //Serial.print("#");
       digitalWrite(valv_in, LOW);
       digitalWrite(valv_out, HIGH);
       delay(1800);
