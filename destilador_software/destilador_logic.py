@@ -16,6 +16,10 @@ class destilador(QtGui.QMainWindow):
     def run(self, flag):
         complemento = 36.00
         complemento = str(complemento)
+        self.serial.write("#on" + "\n")
+        time.sleep(0.1)
+        self.serial.write("#on" + "\n")
+        time.sleep(0.1)
         self.flag = flag
         self.serial.write("#pwr" + complemento + "\n")
         time.sleep(0.1)
@@ -23,11 +27,11 @@ class destilador(QtGui.QMainWindow):
         time.sleep(0.1)
 
         while(self.flag == True):
-            self.serial.flushInput()
-            self.serial.write("#data"+complemento+"\n")
-            time.sleep(0.1)
-            self.serial.write("#data"+complemento+"\n")
-            time.sleep(0.1)
+            #self.serial.flushInput()
+            #self.serial.write("#data"+complemento+"\n")
+            #time.sleep(0.1)
+            #self.serial.write("#data"+complemento+"\n")
+            #time.sleep(0.1)
 
             while(self.serial.in_waiting>0):
                 line = self.serial.readline().strip()
@@ -48,6 +52,10 @@ class destilador(QtGui.QMainWindow):
 
 
     def stop(self):
+        self.serial.write("#off" + "\n")
+        time.sleep(0.1)
+        self.serial.write("#off" + "\n")
+        time.sleep(0.1)
         print ('stop')
 
 

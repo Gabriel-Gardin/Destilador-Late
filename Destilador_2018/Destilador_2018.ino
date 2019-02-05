@@ -6,8 +6,8 @@ Adafruit_MAX31865 max = Adafruit_MAX31865(10, 11, 12, 13);
 #define RREF      430.0
 #define RNOMINAL  99.75
 
-#define valv_in 8
-#define valv_out 9
+#define valv_in 9
+#define valv_out 8
 
 //Definições do dimmer
 #define triacApin 3 // Define que o Dimmer será comandado pelo pino 3
@@ -15,6 +15,8 @@ int frequencia = 60;
 int stateTriacA = 0;
 int power = 0;  //inicializa variavel que controla potencia na lampada com 0 (lampada apagada)
 float volume = 0;
+
+int destilador = 0;
 
 //Sensor de luz 
 #define sensor A1
@@ -42,8 +44,6 @@ void setup()
   attachInterrupt(0, zero_cross_detect, FALLING); // Interrupção para o pino 2(Zero cross detection, Dimmer)
   //attachInterrupt(digitalPinToInterrupt(interruptFimCurso), fim_curso, LOW); //Interrupção fim de curso
 
-  digitalWrite(valv_in, HIGH);
-
 }
 
 int stringToNumber(String thisString)
@@ -55,22 +55,44 @@ int stringToNumber(String thisString)
     value = (10*value) + thisString.charAt(i)-(int) '0';;
   }
   return value;
-}
+}     
 
  
 void loop()
 {
-  Serial.println(analogRead(sensor));
-  if(analogRead(sensor) < 26)  //Verifica se o volume de água está acima do nível do sensor.
+  if(destilador == 1){
+    digitalWrite(valv_in, HIGH);
+  }
+  else{
+    digitalWrite(valv_in, LOW);
+  }
+  //Serial.println(analogRead(sensor));
+  if(analogRead(sensor) > 22)  //Verifica se o volume de água está acima do nível do sensor.
   {
     //Serial.print("#");
-    delay(200);
-    if(analogRead(sensor) < 26){
+    delay(50);
+    if(analogRead(sensor) > 22){
       //Serial.print("#");
+      volume += 2;
+      Serial.print(power);
+      Serial.print(";");
+      Serial.print(volume);
+      Serial.print(";");
+      Serial.print(analogRead(sensor));
+      Serial.print(";");
+      temperatura();
       digitalWrite(valv_in, LOW);
       digitalWrite(valv_out, HIGH);
-      delay(3500);
-      volume += 2;
+      delay(1500);
+      digitalWrite(valv_out, LOW);
+      delay(2000);
+      digitalWrite(valv_out, HIGH);
+      delay(1500);
+      digitalWrite(valv_out, LOW);
+      delay(2000);
+      digitalWrite(valv_out, HIGH);
+      delay(1500);
+      digitalWrite(valv_out, LOW);
     }
     }
   else{
@@ -110,6 +132,29 @@ void loop()
       inputString = "";
       stringComplete = false;
     }
+    if(inputString.startsWith("#on"))
+    {
+      destilador = 1;
+    }
+    if(inputString.startsWith("#off"))
+    {
+      destilador = 0;
+    }
+    if(inputString.startsWith("#clean"))
+    {
+      digitalWrite(valv_in, LOW);
+      digitalWrite(valv_out, HIGH);
+      delay(1500);
+      digitalWrite(valv_out, LOW);
+      delay(2000);
+      digitalWrite(valv_out, HIGH);
+      delay(1500);
+      digitalWrite(valv_out, LOW);
+      delay(2000);
+      digitalWrite(valv_out, HIGH);
+      delay(1500);
+      digitalWrite(valv_out, LOW);
+    }
     // limpa a string e libera a nova recepção de dados
     inputString = "";
     stringComplete = false;
@@ -124,7 +169,7 @@ void serialEvent()
   {
     // get the new byte:
     char inChar = (char)Serial.read();
-    // add it to the inputString:
+    // add it to the inputString:valv_in
     inputString += inChar;
     // if the incoming character is a newline, set a flag so the main loop can
     // do something about it:
