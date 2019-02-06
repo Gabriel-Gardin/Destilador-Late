@@ -9,7 +9,7 @@ class MyWindow(QtGui.QMainWindow):
     def __init__(self):
         super(MyWindow, self).__init__()
         uic.loadUi('destilador.ui', self)
-        self.dest = destilador(self.graphicsView, obj=self)# Instancia a biblioteca do destilador como dest.
+        self.dest = destilador(obj=self)# Instancia a biblioteca do destilador como dest.
         self.Bt_run.clicked.connect(self.btRun)
         self.Bt_stop.clicked.connect(self.btStop)
         self.actionSave_Ass.triggered.connect(self.save)
@@ -25,7 +25,6 @@ class MyWindow(QtGui.QMainWindow):
         self.Text_status.setText("Desligado")
         self.dest.flag = False
         self.dest.stop()
-
     def save(self):
         self.dest.SaveAss()
 

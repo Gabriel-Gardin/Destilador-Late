@@ -7,24 +7,25 @@ from PyQt4.QtGui import QFileDialog
 
 
 class destilador(QtGui.QMainWindow):
-    def __init__(self, graphics, obj):
+    def __init__(self, obj):
         QFileDialog.__init__(self)
+        self.fileDialog = QtGui.QFileDialog(self)
         self.text_status = obj.Text_status
-        self.graphics = graphics
+        self.text_status_2 = obj.Text_status_2
         self.X_data = []
         self.Y_data = []
+        self.graphicsView = obj.graphicsView
         self.serial_check = False
 
     def run(self, flag):
         ports = list(serial.tools.list_ports.comports())
         if(ports):
             for p in ports:
-                if(p.description == 'USB2.0-Serial'):
+                if(p.serial_number == '8543836303935191F060'):
                     print p.device
                     self.serial = serial.Serial(p.device, 9600, timeout=1)
                     self.serial_check = True
                 else:
-                    print("caralho")
                     self.text_status.setText("Destilador nao conectado")
         else:
             self.text_status.setText("Destilador nao conectado")
@@ -47,36 +48,42 @@ class destilador(QtGui.QMainWindow):
 
             while(self.flag == True):
                 self.serial.flushInput()
-                self.serial.write("#data"+complemento+"\n")
-                time.sleep(0.1)
-                self.serial.write("#data"+complemento+"\n")
-                time.sleep(0.1)
+                self.serial.write("#temp"+"\n")
+                time.sleep(0.15)
+                self.serial.write("#temp"+"\n")
+                time.sleep(0.15)
                 QtCore.QCoreApplication.processEvents()
 
                 while(self.serial.in_waiting>0):
                     line = self.serial.readline().strip()
                     plot_data = line.split(";")
+                    print(plot_data)
+                    if(len(plot_data == 1)):
+                        self.text_status_2.setText(str(plot_data))
+                    else:
+                        pass
                     print(len(plot_data))
-                    if(len(plot_data)):
-                        self.fileDialog = QtGui.QFileDialog(self)
-                        # print(self.X_data, self.Y_data)
-                        self.graphics.plot(self.X_data, self.Y_data)
-                    elif (line == '#'):
-                        print("haha!")
+                    if(len(plot_data)==3):
+                        print(len(plot_data))
+                        self.X_data.append(float(plot_data[1]))
+                        self.Y_data.append(float(plot_data[3]))
+                        print(self.X_data, self.Y_data)
+                        self.graphicsView.plot(self.X_data, self.Y_data)
 
                     time.sleep(1)
-                    print(line)
-                    self.X_data.append(float(plot_data[1]))
-                    self.Y_data.append(float(plot_data[2]))
+                    #print(line)
 
 
 
     def stop(self):
-        self.serial.write("#off" + "\n")
-        time.sleep(0.1)
-        self.serial.write("#off" + "\n")
-        time.sleep(0.1)
-        print ('stop')
+        if(self.flag == True):
+            self.serial.write("#off" + "\n")
+            time.sleep(0.1)
+            self.serial.write("#off" + "\n")
+            time.sleep(0.1)
+            print ('stop')
+        else:
+            pass
 
 
     def SaveAss(self):

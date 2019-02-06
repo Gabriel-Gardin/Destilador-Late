@@ -139,6 +139,11 @@ void loop()
     if(inputString.startsWith("#off"))
     {
       destilador = 0;
+      power = 01.00;
+    }
+    if(inputString.startsWith("#temp"))
+    {
+      temperatura();
     }
     if(inputString.startsWith("#clean"))
     {
