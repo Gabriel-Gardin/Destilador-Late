@@ -6,8 +6,8 @@ Adafruit_MAX31865 max = Adafruit_MAX31865(10, 11, 12, 13);
 #define RREF      430.0
 #define RNOMINAL  99.75
 
-#define valv_in 9
-#define valv_out 8
+#define valv_in 8
+#define valv_out 9
 
 //Definições do dimmer
 #define triacApin 3 // Define que o Dimmer será comandado pelo pino 3
@@ -67,11 +67,11 @@ void loop()
     digitalWrite(valv_in, LOW);
   }
   //Serial.println(analogRead(sensor));
-  if(analogRead(sensor) > 22)  //Verifica se o volume de água está acima do nível do sensor.
+  if(analogRead(sensor) < 18)  //Verifica se o volume de água está acima do nível do sensor.
   {
     //Serial.print("#");
     delay(50);
-    if(analogRead(sensor) > 22){
+    if(analogRead(sensor) < 18){
       //Serial.print("#");
       volume += 2;
       Serial.print(power);
