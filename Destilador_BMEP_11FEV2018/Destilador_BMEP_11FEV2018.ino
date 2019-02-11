@@ -106,11 +106,6 @@ while((millis() - t1) <= 2000){
       Serial.print(";");
       temperatura();
     }
-    if(inputString.startsWith("#pwr"))
-    {
-      // Pega o valor numero da potência a partir da posição 4 depois do #pwr
-      power=stringToNumber(inputString.substring(4,sizer));
-    }
     if(inputString.startsWith("#on"))
     {
       destilador = 1;
@@ -120,7 +115,7 @@ while((millis() - t1) <= 2000){
     if(inputString.startsWith("#off"))
     {
       destilador = 0;
-      power = 01.00;
+      power = 0;
     }
     if(inputString.startsWith("#temp"))
     {
