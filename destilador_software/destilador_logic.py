@@ -10,11 +10,8 @@ class destilador(QtGui.QMainWindow):
     def __init__(self, obj):
         QFileDialog.__init__(self)
         self.fileDialog = QtGui.QFileDialog(self)
-        self.text_status = obj.Text_status
         self.text_status_2 = obj.Text_status_2
-        self.X_data = []
-        self.Y_data = []
-        self.graphicsView = obj.graphicsView
+        self.text_status_3 = obj.Text_status_3
         #self.serial_check = False
 
     def run(self, flag):
@@ -66,15 +63,6 @@ class destilador(QtGui.QMainWindow):
                         self.text_status_2.setText(str(plot_data))
                     else:
                         pass
-                    print(len(plot_data))
-                    if(len(plot_data)==4):
-                        print(len(plot_data))
-                        self.X_data.append(float(plot_data[1]))
-                        self.Y_data.append(float(plot_data[3]))
-                        #print(self.X_data, self.Y_data)
-                        #print('aaaaaaaaaaaaaa')
-                        self.graphicsView.plot(self.X_data, self.Y_data)
-
                     time.sleep(0.6)
                     #print(line)
 

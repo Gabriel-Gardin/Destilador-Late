@@ -13,7 +13,13 @@ class MyWindow(QtGui.QMainWindow):
         self.Bt_run.clicked.connect(self.btRun)
         self.Bt_stop.clicked.connect(self.btStop)
         self.actionSave_Ass.triggered.connect(self.save)
-        self.Text_status.setText("Desligado")
+        self.Text_status_2.setPointSize(28)
+        #self.Text_status_2.setText("Desligado")
+        #self.Text_status_2.setText("Desligado")
+
+        self.Text_status_2.setText("Desligado")
+        self.Text_status_3.setText("Desligado")
+        self.Text_status_4.setText("Desligado")
         self.show()
 
     def btRun(self):
